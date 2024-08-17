@@ -1,5 +1,8 @@
 
+
 from pathlib import Path
+from types import SimpleNamespace
+
 import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, Dataset
@@ -7,51 +10,22 @@ from torch.utils.data import DataLoader, Dataset
 path = Path.home().joinpath("Documents","Data")
 path.mkdir(exist_ok=True)
 
-def get_mnist(batch_size):
-    tf = transforms.ToTensor()
-    train = datasets.MNIST(root=path, train=True, 
-                           download=True, transform=tf)
-    test = datasets.MNIST(root=path, train=False, 
-                          download=True, transform=tf)
-    train_loader = DataLoader(train, batch_size= batch_size,
-                              shuffle=True, drop_last=True)
-    test_loader = DataLoader(test, batch_size= batch_size,
-                             shuffle=False, drop_last=False)
-    return train_loader, test_loader
-
-
-def download_cifar10():
-    transform = transforms.ToTensor()
-    cifar10_train = datasets.CIFAR10(root=path, train=True, download=True, 
-                                     transform=transform)
-    cifar10_test = datasets.CIFAR10(root=path, train=False, download=True, 
-                                    transform=transform)
-    return cifar10_train, cifar10_test
-
-
-class CustomDataset(Dataset):
-    def __init__(self, dataset):
-        self.dataset = dataset
-
-    def __len__(self):
-        return len(self.dataset)
-
-    def __getitem__(self, index):
-        image, label = self.dataset[index]
-        image = image.permute(1, 2, 0)
-        return image, label
-
-
-def get_cifar10(batch_size): 
-    train, test = download_cifar10()
-    train = CustomDataset(train)
-    test = CustomDataset(test)
-    train_loader = DataLoader(train, batch_size= batch_size,
-                              shuffle=True, drop_last=True)
-    test_loader = DataLoader(test, batch_size= batch_size,
-                             shuffle=False, drop_last=False)
-    return train_loader, test_loader
+def get_data(dataset_name, batch_size):
     
+    tf = transforms.ToTensor()
+    if dataset_name == "mnist":
+        train = datasets.MNIST(root=path, train=True, download=True, transform=tf)
+        test = datasets.MNIST(root=path, train=False, download=True, transform=tf)
+    elif dataset_name == "cifar10":
+        train = datasets.CIFAR10(root=path, train=True, download=True, transform=tf)
+        test = datasets.CIFAR10(root=path, train=False, download=True, transform=tf)
+
+    loader = SimpleNamespace()
+    loader.train = DataLoader(train, batch_size= batch_size, shuffle=True, drop_last=True)
+    loader.test = DataLoader(test, batch_size= batch_size, shuffle=False, drop_last=False)
+    
+    return loader
+
 
 def separate(loader):
     # separate feature and label from data loader
@@ -63,4 +37,3 @@ def separate(loader):
     Y = torch.cat(Y, dim=0)
     return X, Y
 
-    
