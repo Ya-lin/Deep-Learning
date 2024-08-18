@@ -34,8 +34,8 @@ class AE(nn.Module):
     
     def __init__(self, image_size, channels, embedding_dim):
         super().__init__()
-        self.encoder, shape_bf = get_encoder(image_size, channels, embedding_dim)
-        self.decoder = get_decoder(embedding_dim, channels, shape_bf)
+        self.encoder, self.shape_bf = get_encoder(image_size, channels, embedding_dim)
+        self.decoder = get_decoder(embedding_dim, channels, self.shape_bf)
         
     def forward(self, x):
         x = self.encoder(x)
