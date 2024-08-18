@@ -8,7 +8,7 @@ from keras import layers, models
 from torch import nn
 
 def get_encoder(image_size, channels, embedding_dim):
-    encoder_input = layers.Input(shape=(image_size, image_size, channels))
+    encoder_input = layers.Input(shape=(channels, image_size, image_size))
     x = layers.Conv2D(32, (3, 3), strides=2, activation="relu", padding="same")(encoder_input)
     x = layers.Conv2D(64, (3, 3), strides=2, activation="relu", padding="same")(x)
     x = layers.Conv2D(128, (3, 3), strides=2, activation="relu", padding="same")(x)

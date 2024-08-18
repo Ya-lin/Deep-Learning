@@ -1,20 +1,20 @@
 
 
 import torch
-
+from types import SimpleNamespace
+from pdb import set_trace
 from tqdm import tqdm
 use_tqdm = True
 tqdm = tqdm if use_tqdm else lambda x:x
 
 
 def trainer(model, loader, epochs, optimizer, loss_fn, device):
-    history = {"train": [], "test": []}
+    history = SimpleNamespace(train=[], test=[])
     best_test_loss = float('inf')
     model.train()
-    train_loader, test_loader = loader
     for e in tqdm(range(epochs)):
         train_loss = 0.0
-        for x, _ in train_loader:
+        for x, _ in loader.train:
             x = x.to(device)
             x_hat = model(x)
             loss = loss_fn(x_hat, x)
@@ -22,20 +22,20 @@ def trainer(model, loader, epochs, optimizer, loss_fn, device):
             loss.backward()
             optimizer.step()
             train_loss += loss.item()
-        history["train"].append(train_loss/len(train_loader))
+        history.train.append(train_loss/len(loader.train))
         
         model.eval()
         test_loss = 0.0
         with torch.no_grad():
-            for x, _ in test_loader:
+            for x, _ in loader.test:
                 x = x.to(device)
                 x_hat = model(x)
                 loss = loss_fn(x_hat, x)
                 test_loss += loss.item()
-        history["test"].append(test_loss/len(test_loader))
+        history.test.append(test_loss/len(loader.test))
         
-        if history["test"][-1]<best_test_loss:
-            best_test_loss = history["test"][-1]
+        if history.test[-1]<best_test_loss:
+            best_test_loss = history.test[-1]
             torch.save({"epoch": e, "model_dict": model.state_dict(),
                         "loss": best_test_loss}, "best_model.pth")
 

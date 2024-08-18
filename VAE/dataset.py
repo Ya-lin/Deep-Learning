@@ -12,11 +12,18 @@ path.mkdir(exist_ok=True)
 
 def get_data(dataset_name, batch_size):
     
-    tf = transforms.ToTensor()
     if dataset_name == "mnist":
+        tf = transforms.ToTensor()
         train = datasets.MNIST(root=path, train=True, download=True, transform=tf)
         test = datasets.MNIST(root=path, train=False, download=True, transform=tf)
+    
+    elif dataset_name == "fmnist":
+        tf = transforms.Compose([transforms.Pad(padding=2), transforms.ToTensor()])
+        train = datasets.FashionMNIST(root=path, train=True, download=True, transform=tf)
+        test = datasets.FashionMNIST(root=path, train=False, download=True, transform=tf)
+    
     elif dataset_name == "cifar10":
+        tf = transforms.ToTensor()
         train = datasets.CIFAR10(root=path, train=True, download=True, transform=tf)
         test = datasets.CIFAR10(root=path, train=False, download=True, transform=tf)
 
