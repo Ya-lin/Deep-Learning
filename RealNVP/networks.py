@@ -11,18 +11,6 @@ class CouplingLayer(nn.Module):
         super().__init__()
         self.input_dim = input_dim
         self.mask = mask
-        # self.scale_net = nn.Sequential(
-        #     nn.Linear(input_dim, hidden_dim),
-        #     nn.ReLU(),
-        #     nn.Linear(hidden_dim, input_dim),
-        #     nn.Tanh()
-        # )
-        # self.translate_net = nn.Sequential(
-        #     nn.Linear(input_dim, hidden_dim),
-        #     nn.ReLU(),
-        #     nn.Linear(hidden_dim, input_dim)
-        # )
-        
         self.scale_net = nn.Sequential(
             nn.Linear(input_dim, hidden_dim),
             nn.ReLU(),
