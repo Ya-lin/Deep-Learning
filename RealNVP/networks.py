@@ -37,7 +37,6 @@ class CouplingLayer(nn.Module):
         )
 
     def forward(self, x):
-        # mask = self.mask.to(x.device)
         x1 = x * self.mask
         x2 = x * (1 - self.mask)
         scale = self.scale_net(x1) * (1 - self.mask)
@@ -48,7 +47,6 @@ class CouplingLayer(nn.Module):
         return y1 + y2, log_det
 
     def inverse(self, y):
-        # mask = self.mask.to(y.device)
         y1 = y * self.mask
         y2 = y * (1 - self.mask)
         scale = self.scale_net(y1) * (1 - self.mask)
