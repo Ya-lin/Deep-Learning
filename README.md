@@ -1,9 +1,9 @@
-# Use Keras3 with PyTorch backend
+# Deep Generative Modeling
 
-I am reading the book - [Generative Deep Learning](https://github.com/davidADSP/Generative_Deep_Learning_2nd_Edition).
-This is the reimplementation using Keras3 with PyTorch backend.
+Nodels are implemented via PyTorch or Keras3 using PyTorch as the backend.
 
-1. Deep Learning
-2. VAE
+1. Deep Learning: MLP and CNN
+2. AE-->VAE
+3. Real NVP
 
 
