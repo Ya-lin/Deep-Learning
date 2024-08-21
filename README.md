@@ -12,7 +12,7 @@ Models are implemented via PyTorch or Keras3 using PyTorch as the backend.
 
 ### Real NVP
 * [Real NVP paper](https://arxiv.org/pdf/1605.08803)
-* [My note on Real NVP](RealNVP/real_nvp.pdf)
+* [My note on Real NVP](Real_NVP/real_nvp.pdf)
 * 
   
 
