@@ -55,7 +55,7 @@
 
   The Jacobian matrix of the invertible mapping <math|c<around*|(|z|)>> is
   determined by<\footnote>
-    We have useed the fact that <math|b\<odot\>x=<around*|(|x<rsub|1>,x<rsub|2>,0,0|)>>
+    We have used the fact that <math|b\<odot\>x=<around*|(|x<rsub|1>,x<rsub|2>,0,0|)>>
     is constant in term of <math|x<rsub|3>> and <math|x<rsub|4>>.
   </footnote>
 
