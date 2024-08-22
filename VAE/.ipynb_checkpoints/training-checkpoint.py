@@ -7,14 +7,13 @@ use_tqdm = True
 tqdm = tqdm if use_tqdm else lambda x:x
 
 
-def trainer(model, loader, epochs, optimizer, device):
+def trainer(model, loader, epochs, optimizer):
     history = SimpleNamespace(train=[], test=[])
     best_test_loss = float('inf')
     model.train()
     for e in tqdm(range(epochs)):
         train_loss = 0.0
         for x, _ in loader.train:
-            x = x.to(device)
             loss = model.total_loss(x)
             optimizer.zero_grad()
             loss.backward()
@@ -26,7 +25,6 @@ def trainer(model, loader, epochs, optimizer, device):
         test_loss = 0.0
         with torch.no_grad():
             for x, _ in loader.test:
-                x = x.to(device)
                 loss = model.total_loss(x)
                 test_loss += loss.item()
         history.test.append(test_loss/len(loader.test))
