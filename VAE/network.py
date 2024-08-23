@@ -65,10 +65,13 @@ class VAE(nn.Module):
         return total_loss
 
     @torch.no_grad()
-    def sampling(self, num_sample):
+    def sampling(self, num_sample, latent_sample=False):
         # generate new images
         z = torch.randn(num_sample, self.emb_dim)
         x = self.decoder(z.to(self.device))
-        return x.cpu()
-        
-        
+        if latent_sample:
+            return x.cpu(), z
+        else:
+            return x.cpu()
+
+
