@@ -5,9 +5,9 @@ import torch
 from torchvision import datasets, transforms
 from torch.utils.data import Dataset, DataLoader
 
-path = Path.home().joinpath("Documents","Data")
-path.mkdir(exist_ok=True)
 
+path = Path('/spd', 'data')
+path.mkdir(parents=True, exist_ok=True)
 
 def download_oxford102(val=True, test=True):
     tf = transforms.Compose([transforms.Resize((64, 64)), transforms.ToTensor()])
@@ -33,7 +33,7 @@ class Channel2Last(Dataset):
 
     def __getitem__(self, index):
         image, label = self.dataset[index]
-        image = image.permute(1, 2, 0)
+        #image = image.permute(1, 2, 0)
         return image, label
 
 
