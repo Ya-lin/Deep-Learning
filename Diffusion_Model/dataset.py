@@ -20,8 +20,9 @@ def download_oxford102(val=True, test=True):
                                           transform=tf, download=True)
     if test:
         test_dataset = datasets.Flowers102(root=path, split="test",
-                                           transform=tf, download=True)   
-    return train_dataset, val_dataset, test_dataset
+                                           transform=tf, download=True)
+    repeated_train_dataset = torch.utils.data.ConcatDataset([train_dataset]*5)
+    return repeated_train_dataset, val_dataset, test_dataset
 
 
 class Channel2Last(Dataset):
@@ -33,7 +34,6 @@ class Channel2Last(Dataset):
 
     def __getitem__(self, index):
         image, label = self.dataset[index]
-        #image = image.permute(1, 2, 0)
         return image, label
 
 
