@@ -9,19 +9,16 @@ from torch.utils.data import Dataset, DataLoader
 path = Path('/spd', 'data')
 path.mkdir(parents=True, exist_ok=True)
 
-def download_oxford102(val=True, test=True):
-    tf = transforms.Compose([transforms.Resize((64, 64)), transforms.ToTensor()])
-    train_dataset = datasets.Flowers102(root=path, split="train",
-                                        transform=tf, download=True)
+def download_oxford102(img_size, n_repeat, val=True, test=True):
+    tf = transforms.Compose([transforms.Resize((img_size, img_size)), transforms.ToTensor()])
+    train_dataset = datasets.Flowers102(root=path, split="train", transform=tf, download=True)
     val_dataset = None
     test_dataset = None
     if val:
-        val_dataset = datasets.Flowers102(root=path, split="val",
-                                          transform=tf, download=True)
+        val_dataset = datasets.Flowers102(root=path, split="val", transform=tf, download=True)
     if test:
-        test_dataset = datasets.Flowers102(root=path, split="test",
-                                           transform=tf, download=True)
-    repeated_train_dataset = torch.utils.data.ConcatDataset([train_dataset]*5)
+        test_dataset = datasets.Flowers102(root=path, split="test", transform=tf, download=True)
+    repeated_train_dataset = torch.utils.data.ConcatDataset([train_dataset]*n_repeat)
     return repeated_train_dataset, val_dataset, test_dataset
 
 
@@ -37,21 +34,18 @@ class Channel2Last(Dataset):
         return image, label
 
 
-def get_oxford102(batch_size, val=True, test=True): 
-    train_dataset, val_dataset, test_dataset = download_oxford102(val, test)
+def get_oxford102(batch_size, img_size, n_repeat, val=True, test=True): 
+    train_dataset, val_dataset, test_dataset = download_oxford102(img_size, n_repeat, val, test)
     train_dataset = Channel2Last(train_dataset)
-    train_loader = DataLoader(train_dataset, batch_size=batch_size,
-                              shuffle=True, drop_last=True)
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, drop_last=True)
     val_loader = None
     test_loader = None
     if val: 
         val_dataset = Channel2Last(val_dataset)
-        val_loader = DataLoader(val_dataset, batch_size=batch_size,
-                                shuffle=False, drop_last=False)
+        val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, drop_last=False)
     if test:
         test_dataset = Channel2Last(test_dataset)
-        test_loader = DataLoader(test, batch_size= batch_size,
-                             shuffle=False, drop_last=False)
+        test_loader = DataLoader(test, batch_size= batch_size, shuffle=False, drop_last=False)
     return train_loader, val_loader, test_loader
 
 
@@ -66,4 +60,3 @@ def separate(loader):
     return X, Y
 
     
-   
