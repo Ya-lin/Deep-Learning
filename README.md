@@ -9,6 +9,7 @@ Models are implemented via PyTorch or Keras3 using PyTorch as the backend.
 ### VAE
 * AE(Autoencoder)
 * VAE(Variational Autoencoder)
+* VQ-VAE (Vector-Quantized Variational Autoencoder)
 
 ### Real NVP
 * [Real NVP paper](https://arxiv.org/pdf/1605.08803)
