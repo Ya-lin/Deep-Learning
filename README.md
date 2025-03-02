@@ -2,7 +2,7 @@
 
 Models are implemented via PyTorch or Keras3 using PyTorch as the backend.
 
-## Deep Learning
+## Neural Network
 * MLP 
 * CNN
 * Transfer Learning
